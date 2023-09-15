@@ -1,0 +1,32 @@
+
+
+
+
+QPushButton{ border-radius: 6px; 
+             border :6px solid LightGray; 
+             background-color: LightGray
+}
+
+QComboBox {
+    	border-radius: 6px; 
+        border :6px solid LightGray; 
+        background-color: LightGray;
+
+}
+
+
+QComboBox::drop-down {
+        width: 15px;
+        background-color: LightGray;
+        image: url(./support_file/array_key_down.png)
+
+}
+
+
+QCheckBox::indicator {
+    border-radius: 5px; 
+    border :2px solid LightGray; 
+}
+
+
+
