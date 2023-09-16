@@ -2285,7 +2285,7 @@ class MainWindow(QMainWindow):
            or os.path.isfile(self.release_folder+'/'+self.date+'-'+str(self.release_count)+'.jpg'):
             self.release_count += 1
         if write_flag:
-            cv2.imwrite(self.release_folder+'/'+self.date+'-'+str(self.release_count)+'.png', self.img_release)
+            cv2.imwrite(self.release_folder+'/'+self.date+'-'+str(self.release_count)+'.jpg', self.img_release)
         #cv2.imshow('released', self.img_release)
         self.live_timer.start(40)
         
