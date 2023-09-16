@@ -11,8 +11,8 @@ import win32gui
 import win32api
 import win32con
 import time
-from pywinauto.controls.win32_controls import EditWrapper, ListBoxWrapper,\
-    ButtonWrapper
+# from pywinauto.controls.win32_controls import EditWrapper, ListBoxWrapper,\
+    # ButtonWrapper
 import cv2
 import numpy as np
 from plane_formula import Get_Plane_Para, Get_Z_Position
