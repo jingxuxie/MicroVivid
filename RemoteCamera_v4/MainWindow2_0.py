@@ -34,7 +34,7 @@ import win32con
 sys.coinit_flags = 2
 import warnings
 warnings.simplefilter("ignore", UserWarning)
-from pywinauto.controls.win32_controls import EditWrapper, ListBoxWrapper
+# from pywinauto.controls.win32_controls import EditWrapper, ListBoxWrapper
 import scipy.signal as signal
 from Threads import StageThread, AutoFocusThread, FindFocusPlane, Scan,\
     LayerSearchThread, LargeScanThread
@@ -2191,13 +2191,13 @@ class MainWindow(QMainWindow):
         
     def set_rgb_value(self):
         self.sld.r_min_sld.setValue(self.r_min)
-        self.sld.r_max_sld.setValue(self.r_max*10)
+        self.sld.r_max_sld.setValue(round(self.r_max*10))
         self.sld.g_min_sld.setValue(self.g_min)
-        self.sld.g_max_sld.setValue(self.g_max*10)
+        self.sld.g_max_sld.setValue(round(self.g_max*10))
         self.sld.b_min_sld.setValue(self.b_min)
-        self.sld.b_max_sld.setValue(self.b_max*10)
+        self.sld.b_max_sld.setValue(round(self.b_max*10))
         self.sld.bright_sld.setValue(self.brightness)
-        self.sld.contrast_sld.setValue(self.contrast_coe*10)
+        self.sld.contrast_sld.setValue(round(self.contrast_coe*10))
 
     def sld_connect(self):
         self.sld.r_min_sld.valueChanged[int].connect(self.set_r_min_value)
@@ -2925,8 +2925,8 @@ class MainWindow(QMainWindow):
             self.window_width = self.initial_window_width
             self.window_height = self.initial_window_height
         else:
-            self.window_width = self.geometry().width()
-            self.window_height = self.geometry().height()
+            self.window_width = min(self.geometry().width(), 3500)
+            self.window_height = min(self.geometry().height(), 1980)
         
         self.img_show_width = max(1, self.img_show.shape[1])
         self.img_show_height = max(1, self.img_show.shape[0])       
