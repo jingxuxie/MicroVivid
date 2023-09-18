@@ -29,6 +29,7 @@ class Camera:
         if self.last_frame is None:
             self.initial_img_error = True
             self.last_frame = np.zeros((512,512,3), np.uint8)
+        self.initialize()
 
     def initialize(self):
         self.cap = cv2.VideoCapture(self.cam_num)
