@@ -2738,10 +2738,11 @@ class MainWindow(QMainWindow):
                 self.window_normal = False
     
     def refresh_raw(self, raw_scale = 1):
+        self.img_draw = cv2.cvtColor(self.img_raw, cv2.COLOR_BGR2RGB)
         if self.SB:
             background_cut = cv2.resize(self.background, (self.img_raw.shape[1], \
                                                           self.img_raw.shape[0]))
-            self.img_raw = background_divide(self.img_raw, background_cut, self.background_norm)           
+            self.img_raw = background_divide(self.img_raw, background_cut, self.background_norm)
         if self.gray:
             self.img_raw = cv2.cvtColor(self.img_raw,cv2.COLOR_BGR2GRAY)
             self.img_raw = self.change_contrast(self.img_raw)
@@ -2752,7 +2753,7 @@ class MainWindow(QMainWindow):
         
         if len(self.draw_shape_action_list) > 0:
             self.generate_draw_shape_list()
-            # self.img_raw = cv2.cvtColor(self.img_raw, cv2.COLOR_BGR2RGB)
+            self.img_raw = cv2.cvtColor(self.img_raw, cv2.COLOR_BGR2RGB)
             self.draw_shape_canvas_for_raw(raw_scale)
             self.img_raw = cv2.cvtColor(self.img_raw, cv2.COLOR_RGB2BGR)
         
@@ -2807,7 +2808,7 @@ class MainWindow(QMainWindow):
             temp = self.img_raw.copy()
         # self.canvas_raw = np.zeros(temp.shape, dtype = np.uint8)
         self.canvas_raw = temp
-        self.canvas_raw = cv2.cvtColor(temp, cv2.COLOR_BGR2RGB)
+        # self.canvas_raw = cv2.cvtColor(temp, cv2.COLOR_BGR2RGB)
         text_scale = max(1, self.canvas_raw.shape[0] / 1000)
         # print(text_scale)
         for shape in self.draw_shape_list:
