@@ -27,10 +27,10 @@ from BresenhamAlgorithm import Pos_of_Line, Pos_of_Circle, Pos_in_Circle, \
 import copy
 from numba import jit
 from drawing import Line, Rectangle, Circle, Eraser, Point, Clear_All
-import pywintypes
-import win32gui
-import win32api
-import win32con
+# import pywintypes
+# import win32gui
+# import win32api
+# import win32con
 sys.coinit_flags = 2
 import warnings
 warnings.simplefilter("ignore", UserWarning)
