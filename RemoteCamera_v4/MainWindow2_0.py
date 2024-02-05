@@ -246,13 +246,13 @@ class MainWindow(QMainWindow):
         toolMenu = self.menubar.addMenu('&Tools')
         toolMenu.addAction(show_scale)
         toolMenu.addAction(release_BK)
-        toolMenu.addAction(capture_BK)
+        # toolMenu.addAction(capture_BK)
         toolMenu.addAction(self.developer_options)
         toolMenu.addAction(restart)
         
         settingMenu = self.menubar.addMenu('&Setting')
         settingMenu.addAction(calibrate_scale)
-        settingMenu.addAction(calibrate_coordinate)
+        # settingMenu.addAction(calibrate_coordinate)
         settingMenu.addAction(set_cam_num)
         settingMenu.addAction(set_auto_iso_and_tv)
         theme_submenu = settingMenu.addMenu('Theme')
@@ -587,7 +587,7 @@ class MainWindow(QMainWindow):
         self.combo_mag.addItem('5x')
         self.combo_mag.addItem('10x')
         self.combo_mag.addItem('20x')
-        self.combo_mag.addItem('60x')
+        self.combo_mag.addItem('50x')
         self.combo_mag.addItem('100x')
         self.combo_mag.activated[str].connect(self.set_magnification)
         self.magnification = int(self.combo_mag.currentText()[:-1])
@@ -616,9 +616,13 @@ class MainWindow(QMainWindow):
         self.CT = False
         self.CT_draw = False
         
-        self.contrast_lbl = QLabel('', self)
-        self.contrast = 0.
-        self.contrast_lbl.setText(str(round(self.contrast,2)))
+        self.contrast_lbl = [[] for i in range(3)]
+        color = ['red', 'green', 'blue']
+        for i in range(3):
+            self.contrast_lbl[i] = QLabel('', self)
+            self.contrast_lbl[i].setStyleSheet('color:' + color[i])
+            self.contrast = 0.
+            # self.contrast_lbl[i].setText('')
         
         self.cb_tool_BNthickness = QCheckBox('BN predict', self)
         self.cb_tool_BNthickness.stateChanged.connect(self.is_bn_thickness)
@@ -669,7 +673,8 @@ class MainWindow(QMainWindow):
         
         self.hbox_contrast = QHBoxLayout()
         self.hbox_contrast.addWidget(self.cb_tool_contrast)
-        self.hbox_contrast.addWidget(self.contrast_lbl)
+        for i in range(3):
+            self.hbox_contrast.addWidget(self.contrast_lbl[i])
         
         self.hbox_bn_thickness = QHBoxLayout()
         self.hbox_bn_thickness.addWidget(self.cb_tool_BNthickness)
@@ -1543,15 +1548,17 @@ class MainWindow(QMainWindow):
             
     
     def release_background(self):
+        '''
         reply = QMessageBox.warning(self, "Warning", 'Releasing background may use '+\
                 'a lot of computer memory and cause unexpected error. Please do NOT '+\
                 'take any other actions during capturing. Do you want to release BKG?',\
                 QMessageBox.No | QMessageBox.No, QMessageBox.Yes)
         if reply == QMessageBox.Yes:
-            self.release_num = 0
-            self.progress_bar.show()
-            self.release_bk_timer.start(40)
-            self.release_bk_frame = []
+        '''
+        self.release_num = 0
+        self.progress_bar.show()
+        self.release_bk_timer.start(40)
+        self.release_bk_frame = []
         
     
     def release_bk_start(self):
@@ -1605,9 +1612,9 @@ class MainWindow(QMainWindow):
                                 'to report bugs and support feedback. Thanks!')
     
     def about(self):
-        QMessageBox.information(self, 'About', 'Camera Remote Control Tool v4.0. with layer search integrated. '+ \
-                                'Proudly designed and created by Jingxu Xie(谢京旭).\n \n'
-                                'Copyright © 2019-2022 Jingxu Xie. All Rights Reserved.')
+        QMessageBox.information(self, 'About', 'Micro Vivid 4K with Auto Finder integrated. '+ \
+                                'Designed by Jingxu Xie.\n \n'
+                                'Copyright © 2019-2023 Jingxu Xie. All Rights Reserved.')
         
     def acknowledgement(self):
         QMessageBox.information(self, 'acknowledgement', 'I thank a lot for Sasha\'s help.')
@@ -1759,7 +1766,9 @@ class MainWindow(QMainWindow):
         self.distance = 0.
         self.distance_lbl.setText(str(round(self.distance, 2))+' um')
         self.contrast = 0.
-        self.contrast_lbl.setText(str(round(self.contrast, 2)))
+        for i in range(3):
+            self.contrast_lbl[i].setText('')
+
         
     def zoom_in(self):
         if self.zoom_in_button.isChecked():
@@ -2448,16 +2457,29 @@ class MainWindow(QMainWindow):
                     thickness_text = str(round(self.predz, 1)) + u" \u00B1 " + str(round(self.err, 1)) + ' nm'
                     self.bn_thickness_lbl.setText(thickness_text)
                     put_text_text = str(round(self.predz, 1)) + ' nm ' + '(' + str(round(self.err, 1)) + ')'
-                else:
-                    put_text_text = str(round(self.contrast, 4))
+                # else:
+                #     put_text_text = str(round(self.contrast, 4))
                     
-                cv2.putText(self.img_show, put_text_text, \
-                        (round((self.contrast_line[1].x1_show + self.contrast_line[1].x2_show)/2),\
-                         round((self.contrast_line[1].y1_show + self.contrast_line[1].y2_show)/2)),self.font,\
-                         0.7, (255,0,0), 1, cv2.LINE_AA)
+                    cv2.putText(self.img_show, put_text_text, \
+                            (round((self.contrast_line[1].x1_show + self.contrast_line[1].x2_show)/2),\
+                            round((self.contrast_line[1].y1_show + self.contrast_line[1].y2_show)/2)),self.font,\
+                            0.7, (255,0,0), 1, cv2.LINE_AA)
+                else:
+                    color = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+                    for i in range(3):
+                        cv2.putText(self.img_show, str(round(-self._contrast_rgb[i], 3)), \
+                                (round((self.contrast_line[1].x1_show + self.contrast_line[1].x2_show)/2),\
+                                round((self.contrast_line[1].y1_show + self.contrast_line[1].y2_show)/2) + i * 20),self.font,\
+                                0.7, color[i], 1, cv2.LINE_AA)
+            
+                for i in range(3):
+                    self.contrast_lbl[i].setText(str(round(-self._contrast_rgb[i], 3)))
+
             else:
                 self.contrast = 0
-            self.contrast_lbl.setText(str(round(self.contrast,4)))
+                for i in range(3):
+                    self.contrast_lbl[i].setText('')
+            
             for line in self.contrast_line:
                 line.x1_show, line.y1_show, line.x2_show, line.y2_show \
                     = self.mouse_pos_ratio_change_line(Shape = line)
@@ -2786,17 +2808,24 @@ class MainWindow(QMainWindow):
                     text_scale = max(1, self.img_raw.shape[0] / 1000)
                     cv2.line(self.img_raw, (int(shape.x1 * raw_scale), int(shape.y1 * raw_scale)), 
                          (int(shape.x2 * raw_scale), int(shape.y2 * raw_scale)), shape.color[::-1], int(shape.width*2*text_scale))
-
-                if self.BNthickness:
-                    put_text_text = str(round(self.predz, 1)) + ' nm ' + '(' + str(round(self.err, 1)) + ')'
-                else:
-                    put_text_text = str(round(self.contrast, 3))
                 
+
                 shape = self.contrast_line[1]
                 pos = (int((shape.x1 + shape.x2) * raw_scale / 2), \
                        int((shape.y1 + shape.y2) * raw_scale / 2))
-                cv2.putText(self.img_raw, put_text_text, pos,
+
+                if self.BNthickness:
+                    put_text_text = str(round(self.predz, 1)) + ' nm ' + '(' + str(round(self.err, 1)) + ')'
+                
+                
+                    cv2.putText(self.img_raw, put_text_text, pos,
                         self.font, 0.7*text_scale, (255,0,0)[::-1], int(1*text_scale), cv2.LINE_AA)
+                
+                else:
+                    color = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+                    for i in range(3):
+                        cv2.putText(self.img_raw, str(round(-self._contrast_rgb[i], 3)), (pos[0], pos[1] + i*40),
+                        self.font, 0.7*text_scale, color[i][::-1], int(1*text_scale), cv2.LINE_AA)
 
 
     def draw_shape_canvas_for_raw(self, raw_scale = 1):

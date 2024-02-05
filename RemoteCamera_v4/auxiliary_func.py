@@ -155,6 +155,8 @@ def calculate_contrast(matrix, x1_1, y1_1, x1_2, y1_2, x2_1, y2_1, x2_2, y2_2):
     contrast = (color1 - color2) / (color1 + 0.001)
     if len(matrix.shape) == 3:
         contrast[-1] = contrast[0] * 0.299 + contrast[1] * 0.587 + contrast[2] * 0.114
+    else:
+        contrast = [contrast[-1] for i in range(4)]
     return contrast[-1], contrast[:-1]
 
 

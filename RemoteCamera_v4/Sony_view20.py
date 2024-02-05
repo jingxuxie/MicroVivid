@@ -17,7 +17,7 @@ import os
 class LiveWindow(MainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Micro Vivid 4K (last build: Oct. 11, 2023)')
+        self.setWindowTitle('Micro Vivid 4K (last build: Dec. 10, 2023)')
         
         self.button_save_as.hide()
     
